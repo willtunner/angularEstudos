@@ -54,20 +54,20 @@ export class FindCepComponent implements OnInit {
     if (this.cidadeDiv === true) {
       this.enderecos = [];
       this.ruaInvalid = false;
-      console.log(
+      /*console.log(
         'Consulta: Cidade: ' +
           this.cidade +
           ' UF: ' +
           this.uf +
           ' Rua: ' +
           this.rua
-      );
+      );*/
 
       this.consultaCep
         .getEnderecoList(this.uf, this.cidade.replace(' ', '%20'), this.rua)
         .subscribe(
           (data: Endereco[]) => {
-            console.log(data);
+            // console.log(data);
             if (data.length === 0) {
               this.msg_erro = this.error_consult_city.replace(
                 '%',
@@ -105,7 +105,7 @@ export class FindCepComponent implements OnInit {
   }
 
   setCidade(uf: string){
-    console.log(uf)
+    // console.log(uf)
 
     this.consultaCep.getCidadeList(uf)
       .subscribe((data:Cidade[]) =>
@@ -114,11 +114,11 @@ export class FindCepComponent implements OnInit {
   }
 
   buscarCEP(){
-	console.log("CEP consultado: " + this.cep);
+	// console.log("CEP consultado: " + this.cep);
 
 	this.consultaCep.getCEP(this.cep)
       .subscribe(data => {
-        console.log(data)
+        // console.log(data)
         this.endereco = data;
           if(this.endereco.erro === true){
             this.msg_erro = this.error_consult_cep.replace("%",""+this.cep);
