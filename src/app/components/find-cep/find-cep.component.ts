@@ -101,7 +101,7 @@ export class FindCepComponent implements OnInit {
         this.empresa.state = data.address.state
         this.empresa.details = data.address.details
         this.empresa.zip = data.address.zip
-        console.log(data);
+        // console.log(data);
       })
     } else {
       this.endereco = new Endereco();
