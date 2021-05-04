@@ -6,6 +6,7 @@ import { Endereco } from 'src/app/_models/endereco';
 import { Uf } from 'src/app/_models/uf';
 import { Cidade } from 'src/app/_models/cidade';
 import { Empresa } from 'src/app/_models/empresa';
+import { Texts } from '../../shared/enums/texts';
 
 @Component({
   selector: 'app-find-cep',
@@ -14,7 +15,7 @@ import { Empresa } from 'src/app/_models/empresa';
   styleUrls: ['./find-cep.component.scss'],
 })
 export class FindCepComponent implements OnInit {
-  title = 'Consulta CEP';
+  title = Texts.TITLE;
 
   public cep!: number;
   public cnpj!: number;
@@ -35,8 +36,9 @@ export class FindCepComponent implements OnInit {
   empresas!: Empresa[];
   msg_erro: any;
 
-  error_consult_cep = 'Não foi encontrado endereço para o CEP: %';
-  error_consult_city = 'Não foi encontrado endereço para a rua: %';
+  // Enuns
+  error_consult_cep = Texts.ERRO_CEP;
+  error_consult_city = Texts.ERRO_CITY;
 
   constructor(private services: ServicesService) {}
 
