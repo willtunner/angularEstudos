@@ -97,6 +97,10 @@ export class FindCepComponent implements OnInit {
     if(this.cnpjDiv === true){
       this.services.getCnpj(this.cnpj).subscribe( (data) => {
         this.empresa = data;
+        this.empresa.city = data.address.city
+        this.empresa.state = data.address.state
+        this.empresa.details = data.address.details
+        this.empresa.zip = data.address.zip
         console.log(data);
       })
     } else {

@@ -1,23 +1,20 @@
 export class Empresa {
   id!: number;
-  data_situacao!: string;
-  complemento!: string;
-  nome!: string;
-  uf!: string;
-  telefone!: string;
+  name!: string;
+  phone!: string;
   email!: string;
   situacao!: string;
-  bairro!: string;
-  logradouro!: string;
-  numero!: string;
-  cep!: string;
-  municipio!: string;
-  porte!: string;
-  abertura!: string;
-  natureza_juridica!: string;
-  fantasia!: string;
-  cnpj!: string;
-  ultima_atualizacao!: string;
+  address!: object;
+  type!: string;
+  founded!: string;
+  alias!: string;
+  tax_id!: string;
+  last_update!: string;
   status!: string;
-  capital_social!: string;
+  capital!: string;
+  city!: string;
+  details!: string;
+  state!: string;
+  street!: string;
+  zip!: string;
 }
