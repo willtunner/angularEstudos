@@ -1,28 +1,47 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ServicesService {
 
-  constructor(private http: HttpClient) { }
+  baseUrlCnpj = environment.baseUrlCnpj;
+  baseUrlCep = environment.baseUrlCep;
+  baseUrlUf = environment.baseUrlUf;
+  chaveApiCnpj = environment.chaveApiCnpj;
+
+
+
+  constructor(
+    private http: HttpClient,
+    ) { }
 
   getCEP(cep: number): Observable<any> {
-    //return this.http.get(`${this.baseUrl}?cep=${cep}`);
-    return this.http.get(`https://viacep.com.br/ws/${cep}/json/`);
+    return this.http.get(`${this.baseUrlCep}${cep}/json/`);
   }
 
   getUFList(): Observable<any> {
-    return this.http.get(`https://servicodados.ibge.gov.br/api/v1/localidades/estados`)
+    return this.http.get(`${this.baseUrlUf}`)
+  }
+
+  getCnpj(cnpj: number): Observable<any> {
+    const headers = new HttpHeaders({
+      'content-type': 'application/json',
+      'authorization': `${this.chaveApiCnpj}`,
+    });
+
+
+    return this.http.get(`${this.baseUrlCnpj}${cnpj}`, {headers: headers});
   }
 
   getCidadeList(uf: string): Observable<any> {
-    return this.http.get(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/distritos`);
+    return this.http.get(`${this.baseUrlUf}/${uf}/distritos`);
   }
 
   getEnderecoList(uf: string, localidade: string, logradouro: string ): Observable<any> {
-    return this.http.get(`https://viacep.com.br/ws/${uf}/${localidade}/${logradouro}/json/`);
+    return this.http.get(`${this.baseUrlCep}${uf}/${localidade}/${logradouro}/json/`);
   }
 }

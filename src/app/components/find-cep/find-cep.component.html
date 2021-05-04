@@ -31,6 +31,17 @@
         />
         <label class="form-check-label" for="inlineRadio2">Logradouro</label>
       </div>
+      <div class="form-check form-check-inline mr-1">
+        <input
+          class="form-check-input"
+          type="radio"
+          name="inline-radios"
+          id="inlineRadio3"
+          value="option3"
+          (change)="changeTipo(3)"
+        />
+        <label class="form-check-label" for="inlineRadio2">CNPJ</label>
+      </div>
     </div>
   </div>
 
@@ -52,11 +63,12 @@
               name="cep-input"
               onkeypress="return event.charCode >= 48 && event.charCode <= 57"
               ngModel
-              maxlength="8"
-              minlength="8"
+              maxlength="9"
+              minlength="9"
               class="form-control"
               placeholder="Somente número"
               required
+              mask="00000-000"
             />
           </div>
         </div>
@@ -266,6 +278,208 @@
       </div>
     </div>
     <!--/.col-->
+  </div>
+
+  <!-- Informe o CNPJ -->
+  <div class="card" *ngIf="cnpjDiv">
+    <div class="card-header">
+      <strong>Pesquisa por CNPJ</strong>
+    </div>
+
+    <div class="card-body">
+      <form (ngSubmit)="onSubmit()" #cnpjForm="ngForm">
+        <div class="form-group row">
+          <label class="col-sm-5 col-form-label" for="cep-input"
+            >Informe o CNPJ:
+          </label>
+          <div class="col-sm-6">
+            <input
+              [(ngModel)]="cnpj"
+              type="text"
+              id="cnpj-input"
+              name="cnpj-input"
+              onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+              ngModel
+              maxlength="18"
+              minlength="18"
+              class="form-control"
+              placeholder="Somente número"
+              required
+              mask="00.000.000/0000-00"
+            />
+          </div>
+        </div>
+        <div class="card-footer">
+          <button type="submit" class="btn btn-sm btn-primary">
+            <i class="fa fa-dot-circle-o"></i> Buscar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <br /><br />
+  <div class="card" *ngIf="cnpjDiv">
+    <div class="card-header">
+      <strong>Empresa</strong>
+    </div>
+    <div class="card-body">
+      <form
+        action=""
+        method="post"
+        enctype="multipart/form-data"
+        class="form-horizontal"
+      >
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="text-input">Nome: </label>
+          <div class="col-md-9">
+            <input
+              type="text"
+              id="rua"
+              name="rua"
+              class="form-control"
+              value="{{ empresa.nome }}"
+              disabled
+            />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="text-input"
+            >Fantasia:
+          </label>
+          <div class="col-md-9">
+            <input
+              type="text"
+              id="bairro"
+              name="bairro"
+              class="form-control"
+              value="{{ empresa.fantasia }}"
+              disabled
+            />
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="text-input"
+            >Email:
+          </label>
+          <div class="col-md-9">
+            <input
+              type="text"
+              id="email"
+              name="email"
+              class="form-control"
+              value="{{ empresa.email }}"
+              disabled
+            />
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="text-input"
+            >Telefone:
+          </label>
+          <div class="col-md-9">
+            <input
+              type="text"
+              id="telefone"
+              name="telefone"
+              class="form-control"
+              value="{{ empresa.telefone }}"
+              disabled
+            />
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="text-input">Cnpj: </label>
+          <div class="col-md-9">
+            <input
+              type="text"
+              id="cnpj"
+              name="cnpj"
+              class="form-control"
+              value="{{ empresa.cnpj }}"
+              disabled
+            />
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="text-input">Data: </label>
+          <div class="col-md-9">
+            <input
+              type="text"
+              id="data"
+              name="data"
+              class="form-control"
+              value="{{ empresa.data_situacao }}"
+              disabled
+            />
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="text-input"
+            >Cidade:
+          </label>
+          <div class="col-md-5">
+            <input
+              type="text"
+              id="cidade"
+              name="cidade"
+              class="form-control"
+              value="{{ endereco.localidade }}"
+              disabled
+            />
+          </div>
+
+          <label class="col-md-2 col-form-label" for="text-input"
+            >Estado:
+          </label>
+          <div class="col-md-2">
+            <input
+              type="text"
+              id="estado"
+              name="estado"
+              class="form-control"
+              value="{{ endereco.uf }}"
+              disabled
+            />
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="text-input"
+            >Complemento:
+          </label>
+          <div class="col-md-9">
+            <input
+              type="text"
+              id="complemento"
+              name="complemento"
+              class="form-control"
+              value="{{ empresa.complemento }}"
+              disabled
+            />
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="text-input">Cep: </label>
+          <div class="col-md-9">
+            <input
+              type="text"
+              id="cep"
+              name="cep"
+              class="form-control"
+              value="{{ empresa.cep }}"
+              disabled
+            />
+          </div>
+        </div>
+      </form>
+    </div>
   </div>
 </div>
 <br />

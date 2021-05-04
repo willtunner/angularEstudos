@@ -11,6 +11,7 @@ import { SharedModule } from './shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AlertModule } from 'ngx-bootstrap/alert';
+import { NgxMaskModule } from 'ngx-mask'
 
 @NgModule({
   declarations: [
@@ -27,7 +28,10 @@ import { AlertModule } from 'ngx-bootstrap/alert';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    AlertModule
+    AlertModule,
+    NgxMaskModule.forRoot({
+      dropSpecialCharacters: true // ao salvar, vai manter a mascara
+    }),
 
   ],
   providers: [],

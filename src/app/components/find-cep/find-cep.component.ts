@@ -5,6 +5,7 @@ import { ServicesService } from 'src/app/shared/services.service';
 import { Endereco } from 'src/app/_models/endereco';
 import { Uf } from 'src/app/_models/uf';
 import { Cidade } from 'src/app/_models/cidade';
+import { Empresa } from 'src/app/_models/empresa';
 
 @Component({
   selector: 'app-find-cep',
@@ -16,30 +17,35 @@ export class FindCepComponent implements OnInit {
   title = 'Consulta CEP';
 
   public cep!: number;
+  public cnpj!: number;
   public cidade!: string;
   public uf!: string;
   public rua!: string;
   endereco!: Endereco;
+  empresa!: Empresa;
   public cepDiv!: boolean;
   public cidadeDiv!: boolean;
+  public cnpjDiv!: boolean;
 
   public ruaInvalid!: boolean;
 
   ufs!: Uf[];
   cidades!: Cidade[];
   enderecos!: Endereco[];
+  empresas!: Empresa[];
   msg_erro: any;
 
   error_consult_cep = 'Não foi encontrado endereço para o CEP: %';
   error_consult_city = 'Não foi encontrado endereço para a rua: %';
 
-  constructor(private consultaCep: ServicesService) {}
+  constructor(private services: ServicesService) {}
 
   ngOnInit(): void {
     this.cepDiv = true;
     this.endereco = new Endereco();
+    this.empresa = new Empresa();
 
-    this.consultaCep.getUFList().subscribe(
+    this.services.getUFList().subscribe(
       (data: Uf[]) => {
         this.ufs = data;
         this.ufs.sort((a, b) => a.sigla.localeCompare(b.sigla));
@@ -63,7 +69,7 @@ export class FindCepComponent implements OnInit {
           this.rua
       );*/
 
-      this.consultaCep
+      this.services
         .getEnderecoList(this.uf, this.cidade.replace(' ', '%20'), this.rua)
         .subscribe(
           (data: Endereco[]) => {
@@ -84,6 +90,15 @@ export class FindCepComponent implements OnInit {
             console.log(err);
           }
         );
+    }
+
+
+
+    if(this.cnpjDiv === true){
+      this.services.getCnpj(this.cnpj).subscribe( (data) => {
+        this.empresa = data;
+        console.log(data);
+      })
     } else {
       this.endereco = new Endereco();
       this.buscarCEP();
@@ -95,34 +110,47 @@ export class FindCepComponent implements OnInit {
     this.enderecos = [];
     this.ruaInvalid = false;
 
-    if(tipo === 1){
-     this.cepDiv = true;
-     this.cidadeDiv = false;
-    }else{
+    if (tipo === 1) {
+      this.cepDiv = true;
+      this.cidadeDiv = false;
+      this.cnpjDiv = false;
+    }
+    if (tipo === 2) {
       this.cidadeDiv = true;
       this.cepDiv = false;
+      this.cnpjDiv = false;
+    }
+    if (tipo === 3){
+      this.cidadeDiv = false;
+      this.cepDiv = false;
+      this.cnpjDiv = true;
     }
   }
 
-  setCidade(uf: string){
+  setCidade(uf: string) {
     // console.log(uf)
 
-    this.consultaCep.getCidadeList(uf)
-      .subscribe((data:Cidade[]) =>
-        {this.cidades = data; this.cidades.sort((a,b)=> a.nome.localeCompare(b.nome))},
-         error => console.log(error));
+    this.services.getCidadeList(uf).subscribe(
+      (data: Cidade[]) => {
+        this.cidades = data;
+        this.cidades.sort((a, b) => a.nome.localeCompare(b.nome));
+      },
+      (error) => console.log(error)
+    );
   }
 
-  buscarCEP(){
-	// console.log("CEP consultado: " + this.cep);
+  buscarCEP() {
+    // console.log("CEP consultado: " + this.cep);
 
-	this.consultaCep.getCEP(this.cep)
-      .subscribe(data => {
+    this.services.getCEP(this.cep).subscribe(
+      (data) => {
         // console.log(data)
         this.endereco = data;
-          if(this.endereco.erro === true){
-            this.msg_erro = this.error_consult_cep.replace("%",""+this.cep);
-          }
-      }, error => console.log(error));
+        if (this.endereco.erro === true) {
+          this.msg_erro = this.error_consult_cep.replace('%', '' + this.cep);
+        }
+      },
+      (error) => console.log(error)
+    );
   }
 }
